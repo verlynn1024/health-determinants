@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Profiles: Health Determinants in Europe</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Open+Sans&family=Roboto+Mono&display=swap">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/visualizations.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="../assets/images/logo.png" alt="Project Logo" class="logo">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="country-profiles.html">Country Profiles</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" role="main">
+        <h1>Country Profiles: Health Determinants in Europe</h1>
+
+        <div class="interactive-container">
+            <div id="map-container" class="section card">
+                <h2>Select a Country</h2>
+                <div id="europe-map"></div>
+            </div>
+
+            <section id="country-info" class="section card" style="display: none;">
+                <div id="country-header">
+                    <img id="country-flag" class="country-flag" src="" alt="Country flag">
+                    <h2 id="country-name"></h2>
+                  </div>
+                <div id="country-stats">
+                    <p id="country-capital"></p>
+                    <p id="country-population"></p>
+                </div>
+            </section>
+
+            <section id="health-determinants" class="section card" style="display: none;">
+                <h3>Health Determinants Dashboard</h3>
+                <div class="dashboard-grid">
+                    <div class="dashboard-item" id="smoking-rate">
+                        <h4>Smoking Rate</h4>
+                        <div class="gauge-chart"></div>
+                    </div>
+                    <div class="dashboard-item" id="alcohol-consumption">
+                        <h4>Alcohol Consumption</h4>
+                        <div class="gauge-chart"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="trends-section" class="section card" style="display: none;">
+                <h3>Health Trends Over Time</h3>
+                <div id="trends-chart"></div>
+            </section>
+
+            <section id="country-comparison" class="section card" style="display: none;">
+                <h3>Comparison to European Average</h3>
+                <div id="radar-chart"></div>
+            </section>
+
+            <section id="health-insights" class="section card" style="display: none;">
+                <div class="insights-container">
+                    <div class="insights-column">
+                        <h3>Key Health Challenges</h3>
+                        <ul id="health-challenges"></ul>
+                    </div>
+                    <div class="insights-column">
+                        <h3>Notable Achievements</h3>
+                        <ul id="notable-achievements"></ul>
+                    </div>
+                </div>
+            </section>
+    
+            <section id="country-comparison-tool" class="section card">
+                <h3>Compare Countries</h3>
+                <div class="country-selectors">
+                    <select id="country1-select"></select>
+                    <select id="country2-select"></select>
+                </div>
+                <div id="comparison-result"></div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Non-medical Determinants of Health in Europe. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    <script src="../js/interactive-country-profiles.js"></script>
+</body>
+</html>

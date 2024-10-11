@@ -1,0 +1,9 @@
+{
+  "europeanAverages": {
+    "year": 2020,
+    "smokingRate": 26.0,
+    "alcoholConsumption": 9.5,
+    "obesityRate": 21.6,
+    "fruitConsumption": 104.7
+  }
+}
