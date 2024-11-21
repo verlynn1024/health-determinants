@@ -9,6 +9,8 @@ class TobaccoVisualization {
         this.currentView = 'bar';
     }
 
+    
+
     // Load and process data
     async loadData() {
         try {
@@ -71,6 +73,17 @@ class TobaccoVisualization {
             d.year === this.currentYear && 
             d.measureCode === 'SP_DS' // Daily smokers only
         );
+
+        const tooltip = container
+            .append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0)
+            .style('position', 'absolute')
+            .style('background-color', 'white')
+            .style('color', 'black')  // Set text color to black
+            .style('border', '1px solid #ddd')
+            .style('padding', '10px')
+            .style('border-radius', '5px');
     
         // Sort data by value
         filteredData.sort((a, b) => d3.descending(a.value, b.value));

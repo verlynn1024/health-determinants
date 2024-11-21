@@ -153,3 +153,12 @@
     stroke: #ddd;
     stroke-opacity: 0.1;
 }
+
+.tooltip {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    pointer-events: none;
+}
