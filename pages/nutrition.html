@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Patterns - OECD Health Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../js/nutrition-viz.js"></script>
+    <link rel="stylesheet" href="../css/nutrition-style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="tobacco.html">Tobacco Use</a></li>
+            <li><a href="alcohol.html">Alcohol Consumption</a></li>
+            <li><a href="nutrition.html" class="active">Nutrition</a></li>
+            <li><a href="weight.html">Weight Status</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <h1>Nutrition Patterns</h1>
+            <div class="subtitle">Analysis of Dietary Habits and Nutritional Supply Across OECD Countries</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="grid-container">
+            <div class="metric-card">
+                <i class="fas fa-apple-alt"></i>
+                <h3>Fruit Consumption</h3>
+                <div class="metric-value" id="fruitMetric">Loading...</div>
+                <p>Average daily fruit consumption rate</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-carrot"></i>
+                <h3>Vegetable Supply</h3>
+                <div class="metric-value" id="vegMetric">Loading...</div>
+                <p>Daily vegetable supply per capita</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-drumstick-bite"></i>
+                <h3>Protein Supply</h3>
+                <div class="metric-value" id="proteinMetric">Loading...</div>
+                <p>Daily protein supply per capita</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-cookie"></i>
+                <h3>Sugar Supply</h3>
+                <div class="metric-value" id="sugarMetric">Loading...</div>
+                <p>Daily sugar supply per capita</p>
+            </div>
+        </div>
+
+        <section class="visualization-section">
+            <h2>Nutritional Supply Trends</h2>
+            <div class="controls">
+                <select id="nutritionType">
+                    <option value="calories">Calories</option>
+                    <option value="protein">Protein</option>
+                    <option value="fat">Fat</option>
+                    <option value="sugar">Sugar</option>
+                </select>
+                <select id="yearSelect">
+                    <option value="all">All Years</option>
+                    <option value="2020">2020</option>
+                    <option value="2015">2015</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div>
+            <div class="visualization-container" id="nutritionTrends">
+                <!-- D3 visualization will be inserted here -->
+            </div>
+        </section>
+
+        <section class="visualization-section">
+            <h2>Fruit and Vegetable Consumption</h2>
+            <div class="visualization-container" id="fruitVegTrends">
+                <!-- D3 visualization will be inserted here -->
+            </div>
+        </section>
+
+        <section class="key-findings">
+            <h2>Key Findings</h2>
+            <ul>
+                <li>Patterns in daily fruit and vegetable consumption</li>
+                <li>Trends in caloric and nutrient supply</li>
+                <li>Regional variations in dietary habits</li>
+                <li>Changes in nutritional patterns over time</li>
+            </ul>
+        </section>
+
+        <section class="methodology">
+            <h2>Methodology Notes</h2>
+            <p>Data measurements include:</p>
+            <ul>
+                <li>Daily consumption rates of fruits and vegetables</li>
+                <li>Supply of calories, protein, fat, and sugar per capita</li>
+                <li>Survey-based consumption patterns</li>
+                <li>Standardized measurements across OECD countries</li>
+            </ul>
+        </section>
+    </div>
+
+    <script type="module" src="../js/nutrition-viz.js"></script>
+</body>
+</html>

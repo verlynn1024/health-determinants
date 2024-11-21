@@ -3,71 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Non-medical Determinants of Health in Europe</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Open+Sans&family=Roboto+Mono&display=swap">
+    <title>Non-Medical Determinants of Health - OECD Health Statistics</title>
+    
+    <!-- Load D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link rel="stylesheet" href="../css/visualizations.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="pages/tobacco.html">Tobacco Use</a></li>
+            <li><a href="pages/alcohol.html">Alcohol Consumption</a></li>
+            <li><a href="pages/nutrition.html">Nutrition</a></li>
+            <li><a href="pages/weight.html">Weight Status</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
     <header>
-        <nav>
-            <img src="../assets/images/logo.png" alt="Project Logo" class="logo">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="pages/dashboard.html">Dashboard</a></li>
-                <li><a href="pages/country-profiles.html">Country Profiles</a></li>
-                <li><a href="pages/about.html">About</a></li>
-                <li><a href="pages/contact.html">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="header-content">
+            <h1>Non-Medical Determinants of Health</h1>
+            <div class="subtitle">An Interactive Data Visualization Project Using OECD Health Statistics</div>
+        </div>
     </header>
 
+    <!-- Main Content -->
     <main class="container">
-        <section class="grid">
-            <div>
-                <h1>Non-medical Determinants of Health in Europe</h1>
-                <p>Exploring key factors affecting public health across European countries</p>
+        <!-- Background Section -->
+        <section id="background" class="section">
+            <h2>Background</h2>
+            <p>
+                This interactive data visualization project explores the non-medical factors 
+                that significantly influence public health across OECD countries. Using 
+                comprehensive data from 2010 onwards, we examine various lifestyle factors 
+                and their potential impact on population health outcomes.
+            </p>
+            <p>
+                The visualization focuses on four key areas that are crucial determinants 
+                of public health:
+            </p>
 
-                <h2>Project Overview</h2>
-                <p>
-                    The Non-medical Determinants of Health in Europe project aims to visualize and analyze key factors 
-                    affecting public health across European countries. Our interactive tools provide insights into various 
-                    health determinants, enabling policymakers, researchers, and the public to make informed decisions.
-                </p>
-                <a href="pages/dashboard.html">Explore the Dashboard →</a>
-            </div>
-            <div class="card">
-                <h3>Sample Visualization</h3>
-                <img src="/api/placeholder/400/300" alt="Placeholder for chart" style="width: 100%; height: auto;">
+            <div class="data-categories">
+                <div class="category-card">
+                    <h3>Tobacco Use</h3>
+                    <p>Tracking daily smoking rates and vaping product usage across different 
+                       age groups and genders.</p>
+                </div>
+
+                <div class="category-card">
+                    <h3>Alcohol Consumption</h3>
+                    <p>Measuring annual alcohol consumption patterns in liters per person.</p>
+                </div>
+
+                <div class="category-card">
+                    <h3>Nutrition Habits</h3>
+                    <p>Analyzing daily fruit and vegetable consumption, along with fat, 
+                       calorie, protein, and sugar supply.</p>
+                </div>
+
+                <div class="category-card">
+                    <h3>Weight Status</h3>
+                    <p>Examining overweight and obesity rates across different demographics.</p>
+                </div>
             </div>
         </section>
 
-        <section class="feature-grid">
-            <div class="card">
-                <h3>Interactive Dashboard</h3>
-                <p>Explore and analyze health determinants data with our interactive dashboard.</p>
-                <a href="pages/dashboard.html">View Dashboard →</a>
-            </div>
-            <div class="card">
-                <h3>Country Profiles</h3>
-                <p>Detailed health determinant profiles for each European country.</p>
-                <a href="pages/country-profiles.html">Explore Profiles →</a>
-            </div>
-            <div class="card">
-                <h3>About the Project</h3>
-                <p>Learn more about our methodology, data sources, and project team.</p>
-                <a href="pages/about.html">Read More →</a>
-            </div>
+        <!-- Objectives Section -->
+        <section id="objectives" class="section">
+            <h2>Project Objectives</h2>
+            <ul>
+                <li>Provide interactive visualizations that allow users to explore relationships 
+                    between different health determinants across OECD countries</li>
+                <li>Enable comparison of health indicators across different demographic groups 
+                    (age, gender) and time periods</li>
+                <li>Identify trends and patterns in lifestyle factors that may influence 
+                    public health outcomes</li>
+                <li>Create an accessible and intuitive interface for both general audiences 
+                    and health professionals</li>
+                <li>Support evidence-based decision making by presenting complex health data 
+                    in an understandable format</li>
+            </ul>
+        </section>
+
+        <!-- Methodology Section -->
+        <section id="methodology" class="section">
+            <h2>Data & Methodology</h2>
+            <p>
+                Our visualizations are built using D3.js, incorporating data from the OECD's 
+                comprehensive health statistics database. The data covers multiple dimensions 
+                including:
+            </p>
+            <ul>
+                <li>Time period: From 2010 onwards</li>
+                <li>Demographics: Age groups (15+ years, 15-24 years) and gender</li>
+                <li>Measurement methods: Including surveys, self-reporting, and direct measurements</li>
+                <li>Various units of measure: Percentages, grams per person, liters per person, etc.</li>
+            </ul>
         </section>
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2024 Non-medical Determinants of Health in Europe. All rights reserved.</p>
-            <a href="pages/contact.html">Contact Us</a>
-        </div>
+        <p>&copy; 2024 Health Data Visualization Project</p>
     </footer>
 </body>
 </html>

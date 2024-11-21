@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Factors Analysis Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            z-index: 1000;
+        }
+        .error-container {
+            display: none;
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .view-controls {
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+        .statistics-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stat-card {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .btn {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+    <div id="loader" class="loader">Loading...</div>
+    <div id="error-container" class="error-container"></div>
+    <div class="container">
+        <h1>Health Factors Analysis Dashboard</h1>
+        <div class="filters">
+            <div class="filter-group">
+                <label for="start-year">Start Year:</label>
+                <select id="start-year"></select>
+            </div>
+            <div class="filter-group">
+                <label for="end-year">End Year:</label>
+                <select id="end-year"></select>
+            </div>
+            <div class="filter-group">
+                <label for="country-select">Country:</label>
+                <select id="country-select">
+                    <option value="all">All Countries</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="age-group">Age Group:</label>
+                <select id="age-group"></select>
+            </div>
+            <div class="filter-group">
+                <label for="gender">Gender:</label>
+                <select id="gender"></select>
+            </div>
+        </div>
+        <div id="view-controls" class="view-controls"></div>
+        <div id="chart-container" class="chart-container"></div>
+        <div class="statistics-section">
+            <h2>Key Statistics</h2>
+            <div id="statistics-container" class="statistics-container"></div>
+        </div>
+    </div>
+
+    <script>
+    // Global variables
+    let data = {};
+    let metadata = {
+        measures: [],
+        ageGroups: [],
+        genders: []
+    };
+    let filters = {
+        startYear: null,
+        endYear: null,
+        country: 'all',
+        ageGroup: null,
+        gender: null
+    };
+    let activeView = null;
+
+    // Initialize the dashboard
+    async function initDashboard() {
+        showLoader(true);
+        try {
+            await loadMetadata();
+            await loadData();
+            initializeFilters();
+            createVisualization();
+            updateKeyStatistics();
+            showLoader(false);
+        } catch (error) {
+            showError('Failed to initialize dashboard: ' + error.message);
+            showLoader(false);
+        }
+    }
+
+    // Load metadata
+    async function loadMetadata() {
+        const metadataContent = await window.fs.readFile('Filters for Non-medical determinants of health OECD database', { encoding: 'utf8' });
+        const lines = metadataContent.split('\n');
+        
+        for (let line of lines) {
+            line = line.trim();
+            if (line.startsWith('- ')) {
+                const value = line.substring(2);
+                if (line.includes('years')) {
+                    metadata.ageGroups.push(value);
+                } else if (line === '- Female' || line === '- Male') {
+                    metadata.genders.push(value);
+                } else if (!line.includes('start:') && !line.includes('end:') && !line.includes('all countries')) {
+                    metadata.measures.push(value);
+                }
+            }
+        }
+
+        // Set active view to the first measure
+        activeView = metadata.measures[0];
+    }
+
+    // Load data from CSV files
+    async function loadData() {
+        const directory = await window.fs.readFile('directory', { encoding: 'utf8' });
+        const csvFiles = directory.match(/data\/(.+\.csv)/g);
+
+        for (const file of csvFiles) {
+            const measureName = file.split('/')[1].split('_')[0];
+            const csvContent = await window.fs.readFile(file, { encoding: 'utf8' });
+            data[measureName] = processData(d3.csvParse(csvContent));
+        }
+    }
+
+    // Process raw data
+    function processData(rawData) {
+        return rawData.map(d => ({
+            ...d,
+            TIME_PERIOD: +d.TIME_PERIOD,
+            OBS_VALUE: +d.OBS_VALUE
+        })).filter(d => !isNaN(d.OBS_VALUE));
+    }
+
+    // Initialize filter controls
+    function initializeFilters() {
+        const startYearSelect = document.getElementById('start-year');
+        const endYearSelect = document.getElementById('end-year');
+        const countrySelect = document.getElementById('country-select');
+        const ageGroupSelect = document.getElementById('age-group');
+        const genderSelect = document.getElementById('gender');
+
+        // Populate year selects
+        const years = [...new Set(Object.values(data).flatMap(d => d.map(item => item.TIME_PERIOD)))].sort();
+        years.forEach(year => {
+            startYearSelect.add(new Option(year, year));
+            endYearSelect.add(new Option(year, year));
+        });
+
+        // Set initial year values
+        filters.startYear = years[0];
+        filters.endYear = years[years.length - 1];
+        startYearSelect.value = filters.startYear;
+        endYearSelect.value = filters.endYear;
+
+        // Populate country select
+        const countries = [...new Set(Object.values(data).flatMap(d => d.map(item => item.REF_AREA)))].sort();
+        countries.forEach(country => {
+            countrySelect.add(new Option(country, country));
+        });
+
+        // Populate age group select
+        metadata.ageGroups.forEach(age => {
+            ageGroupSelect.add(new Option(age, age));
+        });
+        filters.ageGroup = metadata.ageGroups[0];
+        ageGroupSelect.value = filters.ageGroup;
+
+        // Populate gender select
+        metadata.genders.forEach(gender => {
+            genderSelect.add(new Option(gender, gender));
+        });
+        filters.gender = 'Total';
+        genderSelect.value = filters.gender;
+
+        // Add event listeners
+        [startYearSelect, endYearSelect, countrySelect, ageGroupSelect, genderSelect].forEach(select => {
+            select.addEventListener('change', handleFilterChange);
+        });
+
+        // Initialize view controls
+        const viewControls = document.getElementById('view-controls');
+        metadata.measures.forEach(measure => {
+            const button = document.createElement('button');
+            button.textContent = measure;
+            button.classList.add('btn');
+            button.addEventListener('click', () => {
+                activeView = measure;
+                updateActiveViewButton();
+                createVisualization();
+            });
+            viewControls.appendChild(button);
+        });
+        updateActiveViewButton();
+    }
+
+    // Handle filter changes
+    function handleFilterChange(event) {
+        const { id, value } = event.target;
+        filters[id.replace('-', '')] = value;
+        createVisualization();
+        updateKeyStatistics();
+    }
+
+    // Update active view button
+    function updateActiveViewButton() {
+        const buttons = document.querySelectorAll('#view-controls button');
+        buttons.forEach(button => {
+            if (button.textContent === activeView) {
+                button.style.backgroundColor = '#45a049';
+            } else {
+                button.style.backgroundColor = '#4CAF50';
+            }
+        });
+    }
+
+    // Create visualization based on active view and filters
+    function createVisualization() {
+        const chartContainer = document.getElementById('chart-container');
+        chartContainer.innerHTML = ''; // Clear previous chart
+
+        const filteredData = filterData(data[activeView.toLowerCase()]);
+        
+        // Set up dimensions
+        const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+        const width = chartContainer.clientWidth - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
+
+        // Create SVG
+        const svg = d3.select(chartContainer)
+            .append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .append('g')
+            .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        // Set up scales
+        const x = d3.scaleTime()
+            .domain(d3.extent(filteredData, d => new Date(d.TIME_PERIOD, 0)))
+            .range([0, width]);
+
+        const y = d3.scaleLinear()
+            .domain([0, d3.max(filteredData, d => d.OBS_VALUE)])
+            .range([height, 0]);
+
+        // Create axes
+        svg.append('g')
+            .attr('transform', `translate(0,${height})`)
+            .call(d3.axisBottom(x));
+
+        svg.append('g')
+            .call(d3.axisLeft(y));
+
+        // Create line
+        const line = d3.line()
+            .x(d => x(new Date(d.TIME_PERIOD, 0)))
+            .y(d => y(d.OBS_VALUE));
+
+        svg.append('path')
+            .datum(filteredData)
+            .attr('fill', 'none')
+            .attr('stroke', 'steelblue')
+            .attr('stroke-width', 1.5)
+            .attr('d', line);
+
+        // Add title
+        svg.append('text')
+            .attr('x', width / 2)
+            .attr('y', 0 - (margin.top / 2))
+            .attr('text-anchor', 'middle')
+            .style('font-size', '16px')
+            .style('font-weight', 'bold')
+            .text(`${activeView} Trends`);
+    }
+
+    // Filter data based on current filters
+    function filterData(dataSet) {
+        return dataSet.filter(d => 
+            d.TIME_PERIOD >= filters.startYear &&
+            d.TIME_PERIOD <= filters.endYear &&
+            (filters.country === 'all' || d.REF_AREA === filters.country) &&
+            d.AGE === filters.ageGroup &&
+            d.SEX === filters.gender
+        );
+    }
+
+    // Update key statistics
+    function updateKeyStatistics() {
+        const statsContainer = document.getElementById('statistics-container');
+        statsContainer.innerHTML = ''; // Clear previous stats
+
+        const stats = calculateKeyStatistics();
+
+        Object.entries(stats).forEach(([key, value]) => {
+            const statCard = document.createElement('div');
+            statCard.classList.add('stat-card');
+            statCard.innerHTML = `
+                <h3>${key}</h3>
+                <p>${value !== null ? value.toFixed(2) : 'N/A'}</p>
+            `;
+            statsContainer.appendChild(statCard);
+        });
+    }
+
+    // Calculate key statistics
+    function calculateKeyStatistics() {
+        const stats = {};
+        Object.keys(data).forEach(measure => {
+            const filteredData = filterData(data[measure]);
+            stats[`Avg ${measure}`] = d3.mean(filteredData, d => d.OBS_VALUE);
+        });
+        return stats;
+    }
+
+    // Show/hide loader
+    function showLoader(show) {
+        const loader = document.getElementById('loader');
+        loader.style.display = show ? 'flex' : 'none';
+    }
+
+    // Show error message
+    function showError(message) {
+        const errorContainer = document.getElementById('error-container');
+        errorContainer.textContent = message;
+        errorContainer.style.display = 'block';
+    }
+
+    // Initialize dashboard when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>

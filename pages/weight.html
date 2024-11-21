@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Status Patterns - OECD Health Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="../js/weight-viz.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/tobacco-styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="tobacco.html">Tobacco Use</a></li>
+            <li><a href="alcohol.html">Alcohol Consumption</a></li>
+            <li><a href="nutrition.html">Nutrition</a></li>
+            <li><a href="weight.html" class="active">Weight Status</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <h1>Weight Status Patterns</h1>
+            <div class="subtitle">Analysis of Overweight and Obesity Trends Across OECD Countries</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stat-cards">
+            <div class="stat-card">
+                <i class="fas fa-weight"></i>
+                <h3>Overall Prevalence</h3>
+                <div class="stat-value" id="overallPrevalence">Loading...</div>
+                <p>Population affected by overweight/obesity</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-male"></i>
+                <h3>Male Prevalence</h3>
+                <div class="stat-value" id="malePrevalence">Loading...</div>
+                <p>Male population affected</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-female"></i>
+                <h3>Female Prevalence</h3>
+                <div class="stat-value" id="femalePrevalence">Loading...</div>
+                <p>Female population affected</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Trend</h3>
+                <div class="stat-value" id="trendValue">Loading...</div>
+                <p>Change since 2010</p>
+            </div>
+        </div>
+
+        <section class="visualization-section">
+            <h2>BMI Distribution by Country</h2>
+            <div class="controls">
+                <select id="yearSelect">
+                    <option value="2020">2020</option>
+                    <option value="2015">2015</option>
+                    <option value="2010">2010</option>
+                </select>
+                <select id="categorySelect">
+                    <option value="overweight">Overweight</option>
+                    <option value="obese">Obese</option>
+                    <option value="both">Both</option>
+                </select>
+                <button id="compareBtn">Compare Years</button>
+            </div>
+            <div class="visualization-container" id="bmiDistribution">
+                <!-- D3 visualization will be inserted here -->
+            </div>
+        </section>
+
+        <section class="visualization-section">
+            <h2>Gender Comparison</h2>
+            <div class="gender-comparison">
+                <div class="visualization-container" id="maleChart">
+                    <!-- Male data visualization -->
+                </div>
+                <div class="visualization-container" id="femaleChart">
+                    <!-- Female data visualization -->
+                </div>
+            </div>
+        </section>
+
+        <section class="visualization-section">
+            <h2>Time Series Analysis</h2>
+            <div class="controls">
+                <select id="countrySelect">
+                    <option value="all">All Countries</option>
+                    <!-- Countries will be dynamically added -->
+                </select>
+                <select id="measureSelect">
+                    <option value="overweight">Overweight</option>
+                    <option value="obese">Obese</option>
+                </select>
+            </div>
+            <div class="visualization-container" id="timeSeriesChart">
+                <!-- Time series visualization -->
+            </div>
+        </section>
+
+        <section class="key-findings">
+            <h2>Key Findings</h2>
+            <ul>
+                <li>Overall trends in overweight and obesity rates</li>
+                <li>Gender-specific patterns and disparities</li>
+                <li>Regional variations and cultural influences</li>
+                <li>Correlation with other health determinants</li>
+                <li>Effectiveness of intervention strategies</li>
+            </ul>
+        </section>
+
+        <section class="methodology">
+            <h2>Methodology Notes</h2>
+            <p>Data collection and analysis methods:</p>
+            <ul>
+                <li>BMI measurements and classifications</li>
+                <li>Self-reported vs measured data considerations</li>
+                <li>Age standardization methods</li>
+                <li>Data collection frequency and coverage</li>
+                <li>Statistical analysis techniques</li>
+            </ul>
+        </section>
+    </div>
+
+    <script type="module" src="../js/weight-viz.js"></script>
+</body>
+</html>

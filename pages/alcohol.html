@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alcohol Consumption Patterns - OECD Health Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../js/alcohol-viz.js"></script>    
+    <link rel="stylesheet" href="../css/tobacco-styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="tobacco.html">Tobacco Use</a></li>
+            <li><a href="alcohol.html">Alcohol Consumption</a></li>
+            <li><a href="nutrition.html" class="active">Nutrition</a></li>
+            <li><a href="weight.html">Weight Status</a></li>
+        </ul>
+    </nav>
+    <header>
+        <div class="header-content">
+            <h1>Alcohol Consumption Patterns</h1>
+            <div class="subtitle">Analysis of Alcohol Consumption Across OECD Countries</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="section visualization-section">
+          <h2>Annual Alcohol Consumption by Country</h2>
+          <div class="controls">
+            <select id="yearSelect">
+              <option value="latest">Latest Available</option>
+              <!-- Add more year options as needed -->
+            </select>
+            <select id="viewSelect">
+              <option value="bar">Bar Chart</option>
+              <option value="map">Geographic Map</option>
+            </select>
+          </div>
+          <div id="consumptionTrends" class="visualization-container">
+            <div class="loading">Loading...</div>
+          </div>
+        </div>
+    
+        <div class="section visualization-section">
+          <h2>Consumption Trends Over Time</h2>
+          <div id="timeTrends" class="visualization-container"></div>
+        </div>
+    
+        <div class="section key-findings">
+          <h2>Key Findings</h2>
+          <ul>
+            <li>Variations in consumption patterns across different regions</li>
+            <li>Long-term trends in alcohol consumption</li>
+            <li>Impact of policy changes on consumption rates</li>
+            <li>Relationship with other health indicators</li>
+          </ul>
+        </div>
+    
+        <div class="section methodology">
+          <h2>Methodology Notes</h2>
+          <p>The data represents:</p>
+          <ul>
+            <li>Annual alcohol consumption in liters per person (age 15+)</li>
+            <li>Consumption patterns across different time periods</li>
+            <li>Standardized measurements across OECD countries</li>
+            <li>Data collection through national statistics and surveys</li>
+          </ul>
+        </div>
+      </div>
+    
+      <script src="../js/alcohol-viz.js"></script>
+    </div>
+</body>
+</html>
